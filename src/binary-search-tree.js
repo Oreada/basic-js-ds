@@ -6,6 +6,7 @@ const { NotImplementedError } = require('../extensions/index.js');
 * Implement simple binary search tree according to task description
 * using Node from extensions
 */
+const fs = require('fs');
 
 class BinarySearchTree {
   nodes = {};
@@ -16,6 +17,13 @@ class BinarySearchTree {
   }
 
   add(data) {
+    fs.appendFile('testrrr.log', 'tree.add(' + data + ');\n', err => {
+      if (err) {
+        console.error(err);
+      }
+      // file written successfully
+    });
+
     if (!this.has(data)) {
 
       let leaf = this.findLeaf(data);
@@ -53,6 +61,13 @@ class BinarySearchTree {
   }
 
   remove(data) {
+    fs.appendFile('testrrr.log', 'tree.remove(' + data + ');\n', err => {
+      if (err) {
+        console.error(err);
+      }
+      // file written successfully
+    });
+
     if (this.has(data)) {
       let node = this.find(data);
       let parent = this.findParent(data);
@@ -64,6 +79,12 @@ class BinarySearchTree {
           parent.right = null;
         }
       } else {
+        fs.appendFile('testrrr.log', '!!!!!!!!!!!!!\n', err => {
+          if (err) {
+            console.error(err);
+          }
+          // file written successfully
+        });
         if (node.left) {
           this.rootRef = node.left;
           node.left = null;
@@ -158,23 +179,18 @@ class BinarySearchTree {
         if (node.left.data == data) {
           return node;
         } else {
-          return this.findLeaf(data, node.left);
+          return this.findParent(data, node.left);
         }
-      } else {
-        return null;
       };
     } else if (data > node.data) {
       if (node.right) {
         if (node.right.data == data) {
           return node;
         } else {
-          return this.findLeaf(data, node.right);
+          return this.findParent(data, node.right);
         }
-      } else {
-        return null;
       };
     };
-    return node;
   }
 }
 
